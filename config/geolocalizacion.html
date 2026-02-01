@@ -13,29 +13,33 @@
     
     <h1>Hello, world!</h1>
 
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3500.125498065165!2d-100.56038062470886!3d28.685892275635634!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x865f8c74e096ccd7%3A0xef171a17b0cefc23!2sTensai%20Sushi%20%26%20Bar!5e0!3m2!1ses-419!2smx!4v1769912881626!5m2!1ses-419!2smx" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div id="divMapa"></div>
 
     <script>
-    const options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0,
-    };
+        const options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+        };
 
-    function success(pos) {
-    const crd = pos.coords;
+        function success(pos) {
+            const crd = pos.coords;
 
-    console.log("Your current position is:");
-    console.log(`Latitude : ${crd.latitude}`);
-    console.log(`Longitude: ${crd.longitude}`);
-    console.log(`More or less ${crd.accuracy} meters.`);
-    }
+            console.log("Your current position is:");
+            console.log(`Latitude : ${crd.latitude}`);
+            console.log(`Longitude: ${crd.longitude}`);
+            console.log(`More or less ${crd.accuracy} meters.`);
 
-    function error(err) {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
-    }
+            $("#divMapa").html(
+                `<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3500.125498065165!2d-100.56038062470886!3d28.685892275635634!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x865f8c74e096ccd7%3A0xef171a17b0cefc23!2sTensai%20Sushi%20%26%20Bar!5e0!3m2!1ses-419!2smx!4v1769912881626!5m2!1ses-419!2smx" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                `)
+            }
 
-    navigator.geolocation.getCurrentPosition(success, error, options); 
+        function error(err) {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+        }
+
+        navigator.geolocation.getCurrentPosition(success, error, options); 
     </script>
 
 </body>
