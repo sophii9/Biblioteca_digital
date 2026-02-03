@@ -1,9 +1,15 @@
 <?php 
-require_once '../config/conexion.php';
+require_once '/config/conexion.php';
 
 if(isset($_POST['add'])){
     $t = $_POST['titulo']; $a = $_POST['autor']; $p = $_POST['precio'];
-    mysqli_query($con, "INSERT INTO Libros (titulo, autor, precio_reposicion) VALUES ('$t', '$a', '$p')");
+    mysqli_query($con, 
+    "INSERT INTO Libros (
+    titulo, 
+    autor, 
+    precio_reposicion
+    ) 
+    VALUES ('$t', '$a', '$p')");
 }
 if(isset($_GET['del'])){
     mysqli_query($con, "DELETE FROM Libros WHERE id_libro = ".$_GET['del']);
