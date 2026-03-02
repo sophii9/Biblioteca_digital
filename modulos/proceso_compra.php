@@ -342,19 +342,20 @@ if($libro['cantidad_disponible'] <= 0) {
         let currentLat = 27.4827;
         let currentLng = -99.5070;
 
-        // Generar mapa
-        function generarMapa(latitud, longitud) {
-            currentLat = latitud;
-            currentLng = longitud;
-            
-            const iframe = `<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3500.125497250773!2d${longitud}!3d${latitud}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM!5e0!3m2!1ses-419!2smx!4v${Date.now()}!5m2!1ses-419!2smx" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy"></iframe>`;
-            
-            document.getElementById('map').innerHTML = iframe;
-            document.getElementById('latitud').value = latitud;
-            document.getElementById('longitud').value = longitud;
+        function cargarMapa(lat, lng) {
+            document.getElementById("map").innerHTML = `
+                <iframe
+                    width="100%"
+                    height="600"
+                    style="border:0; border-radius:12px"
+                    loading="lazy"
+                    allowfullscreen
+                    src="https://www.google.com/maps?q=${lat},${lng}&z=15&output=embed">
+                </iframe>
+            `;
         }
 
-        generarMapa(currentLat, currentLng);
+        cargarMapa(currentLat, currentLng);
 
         function cambiarCantidad(delta) {
             const input = document.getElementById('cantidad');
@@ -388,13 +389,13 @@ if($libro['cantidad_disponible'] <= 0) {
             if(this.checked) {
                 if(navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function(position) {
-                        generarMapa(position.coords.latitude, position.coords.longitude);
+                        cargarMapa(position.coords.latitude, position.coords.longitude);
                     }, function(error) {
                         alert('No se pudo obtener tu ubicación');
                     });
                 }
             } else {
-                generarMapa(27.4827, -99.5070);
+                cargarMapa(27.4827, -99.5070);
             }
         });
 

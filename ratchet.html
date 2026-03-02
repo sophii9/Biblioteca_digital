@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</head>
+  <body>
+    <div class="container">
+        <form id="frmMensaje" method="POST">
+    <div class="mb- 1">
+        <div class="row">
+           <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 order-3 order-sm-3 order-md-3 order-lg-1 col-xl-1 col-xxl-1">
+                        <label for="txtUsuario">Usuario:</label>
+                        <input type="text" id="txtUsuario" name="txtUsuario" class="form-control">
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-3 col-xl-3 col-xxl-3 order-1 order-sm-1 order-md-1 order-lg-2 col-xl-2 col-xxl-2">
+                        <label for="colBg">Color Fondo:</label>
+                        <input type="color" id="colBg" name="colBg" class="form-control">
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-3 col-xl-3 col-xxl-3 order-2 order-sm-2 order-md-2 order-lg-3 col-xl-3 col-xxl-3">
+                        <label for="colTexto">Color Texto:</label>
+                        <input type="color" id="colTexto" name="colTexto" class="form-control">
+                    </div>
+                </div> 
+        <label for="txtMensaje" >Mensaje:</label>
+        <textarea name="txtMensaje" id="txtMensaje" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="mb-1">
+        <button class="btn Ibtn-primary">Enviar</button>
+    </div>
+    </form>
+    <div class="div-chat"></div>
+</div>
+    <script>
+        // Then some JavaScript in the browser:
+        var conn = new WebSocket('ws://localhost:8080/echo');
+        conn.onmessage = function(e) {
+            const data = e.data; 
+            console.log(data); 
+            const mensaje = JSON.parse(data);
+            $(".div-chat").append(`<div style="background: 
+            ${mensaje.colorFondo}; color: ${mensaje.colorTexto};">
+                ${mensaje.usuario ? mensaje.usuario + ": " : ""} 
+                ${mensaje.mensaje}
+                </div>`)
+        
+        };
+        conn.onopen = function(e) { 
+            conn.send(JSON.stringify({
+                colorFondo: "yellow",
+                colorTexto: "black",
+                usuario: "",
+                mensaje: "Alguien se unió al chat."
+            }))        
+        };
+
+        $("#frmMensaje").submit(function(e){
+            e.preventDefault();
+            conn.send($(this).serialize());  //ENVÍA TODO EL FORMULARIO, PERO SE PUEDE ENVIAR SOLO UN CAMPO CON $("#txtMensaje").val()
+            const mensaje = {
+            colorFondo : $("#colBg").val(),
+            colorTexto : $("#colTexto").val(),
+            usuario : $("#txtUsuario").val(),
+            mensaje : $("#txtMensaje").val()
+        }
+        })
+    </script>
+</body>
+</html>

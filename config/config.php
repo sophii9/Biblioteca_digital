@@ -1,7 +1,7 @@
 <?php
 // Configuración BD
 define('DB_TYPE', 'mysql');
-define('DB_HOST', '82.180.168.1');
+define('DB_HOST', '46.28.42.226');
 define('DB_NAME', 'u760464709_24005366_bd');
 define('DB_USER', 'u760464709_24005366_usr');
 define('DB_PASS', '!|F>1$H1p');
